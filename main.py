@@ -17,7 +17,6 @@ def log_server_metrics(action_name=""):
 app = Flask(__name__)
 
 def get_connection():
-    log_server_metrics("tickers_request")  # 조회 시 서버 상태 기록
 
     connection = pymysql.connect(
         host='my-mysql',
@@ -32,6 +31,8 @@ def get_connection():
 
 @app.route("/")
 def home():
+    log_server_metrics("home")  # 조회 시 서버 상태 기록
+
     conn = get_connection()
     try:
         with conn.cursor() as cursor:
@@ -46,7 +47,7 @@ def home():
 # 추가
 @app.route("/add", methods=["GET", "POST"])
 def add():
-    log_server_metrics("tickers_request")  # 조회 시 서버 상태 기록
+    log_server_metrics("add")  # 조회 시 서버 상태 기록
 
     if request.method == "POST":
         firstname = request.form.get("Firstname")
@@ -72,6 +73,7 @@ def add():
 # 삭제
 @app.route("/delete/<int:user_id>", methods=["POST"])
 def delete_user(user_id):
+
     conn = get_connection()
     try:
         with conn.cursor() as cursor:
@@ -86,6 +88,8 @@ def delete_user(user_id):
 # 수정
 @app.route("/edit/<int:user_id>", methods=["GET", "POST"])
 def edit_user(user_id):
+    log_server_metrics("edit")  # 조회 시 서버 상태 기록
+
     conn = get_connection()
     try:
         with conn.cursor() as cursor:
