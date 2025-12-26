@@ -27,4 +27,30 @@ def home():
     finally:
         conn.close()
 
-    return render_template("index.html", users=users);
+    return render_template("index.html");
+
+# 추가
+@app.route("/add", methods=["GET", "POST"])
+def add():
+    if request.method == "POST":
+        firstname = request.form.get("Firstname")
+        lastname = request.form.get("Lastname")
+        email = request.form.get("email")  # 이제 에러 없이 가져옵니다.
+
+        print(f"데이터 수신: {firstname}, {lastname}, {email}")
+
+        name = f"{firstname}{lastname}"
+        conn = get_connection()
+        try:
+            with conn.cursor() as cursor:
+                sql = "INSERT INTO users (name, email) VALUES (%s, %s)"
+                cursor.execute(sql, (name, email))
+            conn.commit()
+        finally:
+            conn.close()
+
+        return redirect("/")  # INSERT 후 목록으로 이동
+
+    return render_template("register.html")
+
+
