@@ -27,7 +27,7 @@ def home():
     finally:
         conn.close()
 
-    return render_template("index.html");
+    return render_template("index.html", users=users);
 
 # 추가
 @app.route("/add", methods=["GET", "POST"])
