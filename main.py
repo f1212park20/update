@@ -67,3 +67,28 @@ def delete_user(user_id):
 
     return redirect("/")
 
+# 수정
+@app.route("/edit/<int:user_id>", methods=["GET", "POST"])
+def edit_user(user_id):
+    conn = get_connection()
+    try:
+        with conn.cursor() as cursor:
+            if request.method == "POST":
+                # 폼에서 받은 데이터로 업데이트
+                name = request.form["name"]
+                email = request.form["email"]
+                sql = "UPDATE users SET name=%s, email=%s WHERE id=%s"
+                cursor.execute(sql, (name, email, user_id))
+                conn.commit()
+                return redirect("/")
+
+            # GET: 기존 사용자 정보 가져오기
+            sql = "SELECT * FROM users WHERE id=%s"
+            cursor.execute(sql, (user_id,))
+            user = cursor.fetchone()
+            if not user:
+                return "User not found", 404
+    finally:
+        conn.close()
+
+    return render_template("comify.html", user=user)
