@@ -3,8 +3,9 @@ import pymysql
 import psutil
 import logging
 
-logging.basicConfig(filename='server_metrics.log', level=logging.INFO,
-                    format='%(asctime)s - %(message)s')
+logging.basicConfig(level=logging.INFO,
+        format='%(asctime)s - %(message)s'
+    )
 
 def log_server_metrics(action_name=""):
     cpu = psutil.cpu_percent(interval=0)
