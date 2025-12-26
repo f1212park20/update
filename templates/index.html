@@ -89,6 +89,13 @@
                                         <tr>
                                             <td>{{ user.name }}</td>
                                             <td>{{ user.email }}</td>
+                                            <td>
+                                                <!--삭제버튼-->
+                                                <form action="/delete/{{ user.id }}" method="post"
+                                                      onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                                                    <button type="submit">삭제</button>
+                                                </form>
+                                            </td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>

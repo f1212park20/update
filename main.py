@@ -53,4 +53,17 @@ def add():
 
     return render_template("register.html")
 
+# 삭제
+@app.route("/delete/<int:user_id>", methods=["POST"])
+def delete_user(user_id):
+    conn = get_connection()
+    try:
+        with conn.cursor() as cursor:
+            sql = "DELETE FROM users WHERE id = %s"
+            cursor.execute(sql, (user_id,))
+        conn.commit()
+    finally:
+        conn.close()
+
+    return redirect("/")
 
