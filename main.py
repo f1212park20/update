@@ -4,8 +4,9 @@ import psutil
 import logging
 
 logging.basicConfig(level=logging.INFO,
-        format='%(asctime)s - %(message)s'
-    )
+        format='%(asctime)s - %(message)s',
+        force=True
+        )
 
 def log_server_metrics(action_name=""):
     cpu = psutil.cpu_percent(interval=0)
