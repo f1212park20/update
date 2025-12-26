@@ -1,10 +1,22 @@
 from flask import Flask, render_template, request, redirect
 import pymysql
+import psutil
+import logging
 
+logging.basicConfig(filename='server_metrics.log', level=logging.INFO,
+                    format='%(asctime)s - %(message)s')
+
+def log_server_metrics(action_name=""):
+    cpu = psutil.cpu_percent(interval=0)
+    memory = psutil.virtual_memory().percent
+    disk = psutil.disk_usage('/').percent
+    logging.info(f"[{action_name}] CPU:{cpu}%, Memory:{memory}%, Disk:{disk}%")
 
 app = Flask(__name__)
 
 def get_connection():
+    log_server_metrics("tickers_request")  # 조회 시 서버 상태 기록
+
     connection = pymysql.connect(
         host='my-mysql',
         user='flaskuser',
@@ -32,6 +44,8 @@ def home():
 # 추가
 @app.route("/add", methods=["GET", "POST"])
 def add():
+    log_server_metrics("tickers_request")  # 조회 시 서버 상태 기록
+
     if request.method == "POST":
         firstname = request.form.get("Firstname")
         lastname = request.form.get("Lastname")
