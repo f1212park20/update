@@ -112,3 +112,4 @@ def edit_user(user_id):
         conn.close()
 
     return render_template("comify.html", user=user)
+
